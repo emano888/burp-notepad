@@ -48,17 +48,20 @@ class BurpExtender(IBurpExtender, ITab):
         threads = []
         results_lock = Lock()
 
+        # Disable SSL certificate verification globally
+        ssl._create_default_https_context = ssl._create_unverified_context
+
         def fetch_url(url):
             url = url.strip()
             if url:
                 try:
                     print("Processing URL: {}".format(url))
                     
-                    # Cria o request com User-Agent
+                    # Create request with custom User-Agent
                     req = urllib2.Request(url)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0')
 
-                    # Configura o proxy
+                    # Set up proxy
                     proxy_handler = urllib2.ProxyHandler({
                         'http': 'http://127.0.0.1:8080',
                         'https': 'http://127.0.0.1:8080'
@@ -66,10 +69,7 @@ class BurpExtender(IBurpExtender, ITab):
 
                     opener = urllib2.build_opener(proxy_handler)
 
-                    # Ignora verificação de certificado SSL
-                    ssl_context = ssl._create_unverified_context()
-
-                    response = opener.open(req, context=ssl_context)
+                    response = opener.open(req)
                     status_code = response.getcode()
 
                     with results_lock:
