@@ -13,8 +13,7 @@ HTTP Notepad is a simple Burp Suite extension that adds a custom tab where you c
 
 - All HTTP requests use `http://127.0.0.1:8080` as a proxy
 - Multithreaded request handling
-- Output shown in Burp's Extender console
-
+ 
 ## 📸 Preview
 
 ![HTTP Notepad Preview](preview.png)
